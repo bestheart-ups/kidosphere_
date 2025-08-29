@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # creating app views
+# core/views.py
 
 from rest_framework import generics, permissions
 from .models import User, Post, Follow, Message, Comment, Notification
@@ -125,3 +126,4 @@ class NotificationListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user).order_by('-created_at')
+

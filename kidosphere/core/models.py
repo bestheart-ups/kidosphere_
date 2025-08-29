@@ -70,5 +70,6 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
-        return f"Notification for {self.user.username}: {'Read' if self.is_read else 'Unread'}"
+    def __str__(self):
+        status = "Read" if self.is_read else "unread"
+        return f"Notification for {self.user.username} - {status}"
