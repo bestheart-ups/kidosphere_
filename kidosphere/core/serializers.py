@@ -19,11 +19,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        validated_data.pop('password2')
-        password = validated_data.pop('password')
-        user = User(**validated_data)
-        user.set_password(password)
-        user.save()
+        user = user.object.create_user(
+username = validated_data["username"],
+email = validated_data.get("email"),
+password = validated_data["password"],
+        )
         return user
 
 
@@ -95,3 +95,19 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = Notification
         fields = ('id', 'user', 'content', 'is_read', 'created_at')
         read_only_fields = ("'id', 'user', 'created_at'")
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True)
+    email = serializers.EmailField(required=False)  # optional
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "password"]
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data["username"],
+            email=validated_data.get("email", ""),  #empty if not provided
+            password=validated_data["password"]
+        )
+        return user

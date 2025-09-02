@@ -8,7 +8,7 @@ class User(AbstractUser):
     profile_picture = models.URLField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.username
 
 
@@ -27,7 +27,7 @@ class Post(models.Model):
     is_public = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    def __str__(self):
         return f"Post {self.id} by {self.user.username}"
 
 
@@ -39,7 +39,7 @@ class Follow(models.Model):
     class Meta:
         unique_together = ('follower', 'following')  # Prevent duplicate follows
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.follower.username} follows {self.following.username}"
 
 
@@ -50,7 +50,7 @@ class Message(models.Model):
     sent_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
-    def _str_(self):
+    def __str__(self):
         return f"Message from {self.sender.username} to {self.receiver.username} at {self.sent_at}"
 
 
@@ -60,7 +60,7 @@ class Comment(models.Model):
     comment_text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    def __str__(self):
         return f"Comment by {self.user.username} on Post {self.post.id}"
 
 

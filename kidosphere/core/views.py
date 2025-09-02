@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.db import models
+from django.http import HttpResponse
 
 # creating app views
 # core/views.py
@@ -12,6 +14,8 @@ from .serializers import (
     NotificationSerializer
 )
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 # User registration view
@@ -127,3 +131,14 @@ class NotificationListView(generics.ListAPIView):
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user).order_by('-created_at')
 
+
+def home(request):
+    return HttpResponse("Hello, Core App!")
+
+
+# Protected test view for auth
+class ProtectedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"message": "You have access!"})
